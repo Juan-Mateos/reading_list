@@ -1,0 +1,8 @@
+name: reading_list
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+  - pandas
+  - pyzotero
+  - google-api-python-client
