@@ -1,0 +1,3 @@
+pandas
+pyzotero
+google-api-python-client
