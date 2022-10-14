@@ -70,7 +70,13 @@ if __name__ == "__main__":
 
     print("Saving")
 
-    for f in readings["file_attachments"].dropna():
+    article_url_lookup = {}
+
+    readings_attachments = readings.dropna(axis=0, subset=["file_attachments"])
+
+    for _id, f in zip(
+        readings_attachments["key"], readings_attachments["file_attachments"]
+    ):
 
         if ".pdf" in f:
             if ";" in f:
@@ -80,12 +86,28 @@ if __name__ == "__main__":
                     keep,
                     f"{PROJECT_DIR}/docs/article_files/{clean_article_title(keep)}",
                 )
+                article_url_lookup[
+                    _id
+                ] = f"https://github.com/Juan-Mateos/reading_list/blob/dev/docs/article_files/{clean_article_title(keep)}"
 
             else:
                 shutil.copy(
                     f, f"{PROJECT_DIR}/docs/article_files/{clean_article_title(f)}"
                 )
+                article_url_lookup[
+                    f
+                ] = f"https://github.com/Juan-Mateos/reading_list/blob/dev/docs/article_files/{clean_article_title(f)}"
 
-    (readings
-        .drop(axis=1,labels=["automatic_tags","file_attachments"])
-        .to_markdown(f"{PROJECT_DIR}/docs/master_table/master_table.md"))
+    readings = readings.assign(pdf_link=lambda df: df["key"].map(article_url_lookup))
+
+    (
+        readings.drop(
+            axis=1, labels=["automatic_tags", "file_attachments"]
+        ).to_markdown(f"{PROJECT_DIR}/docs/master_table/master_table.md")
+    )
+
+    (
+        readings.drop(axis=1, labels=["automatic_tags", "file_attachments"]).to_csv(
+            f"{PROJECT_DIR}/docs/master_table/master_table.csv", index=False
+        )
+    )
