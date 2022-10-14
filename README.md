@@ -10,5 +10,6 @@ Run `pip install -r requirements.txt` to install the requirements
 
 ## Running
 
-Run `python reading_list/process_zotero_table.py` to read and process a locally saved csv export of zotero references.
+Run `bash update_push_resources.sh` to read and process a locally saved csv export of zotero references and push the table and resource pdfs where available to GitHb
+
 
