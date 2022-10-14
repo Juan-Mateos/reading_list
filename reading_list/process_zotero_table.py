@@ -30,7 +30,7 @@ MY_TAGS = {
     "2_science_of_science",
     "3_ai_in_science",
     "4_protein_science",
-    "5_environmental_impact",
+    "5_climate_sustainability",
     "6_miscellaneous",
 }
 
