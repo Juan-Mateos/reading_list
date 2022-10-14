@@ -86,4 +86,6 @@ if __name__ == "__main__":
                     f, f"{PROJECT_DIR}/docs/article_files/{clean_article_title(f)}"
                 )
 
-    readings.to_markdown(f"{PROJECT_DIR}/docs/master_table/master_table.md")
+    (readings
+        .drop(axis=1,labels=["automatic_tags","file_attachments"])
+        .to_markdown(f"{PROJECT_DIR}/docs/master_table/master_table.md"))
