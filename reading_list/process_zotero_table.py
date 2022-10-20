@@ -83,7 +83,7 @@ if __name__ == "__main__":
                 fils = f.split(";")
                 keep = [fil for fil in fils if "pdf" in fil][0]
                 shutil.copy(
-                    keep,
+                    keep.strip(),
                     f"{PROJECT_DIR}/docs/article_files/{clean_article_title(keep)}",
                 )
                 article_url_lookup[
@@ -98,16 +98,13 @@ if __name__ == "__main__":
                     f
                 ] = f"https://github.com/Juan-Mateos/reading_list/blob/dev/docs/article_files/{clean_article_title(f)}"
 
-    readings = readings.assign(pdf_link=lambda df: df["key"].map(article_url_lookup))
-
-    (
-        readings.drop(
-            axis=1, labels=["automatic_tags", "file_attachments"]
-        ).to_markdown(f"{PROJECT_DIR}/docs/master_table/master_table.md")
+    readings = (
+        readings.assign(pdf_link=lambda df: df["key"].map(article_url_lookup))
+        .drop(axis=1, labels=["automatic_tags", "file_attachments"])
+        .sort_values("project_tags")
+        .reset_index(drop=True)
     )
 
-    (
-        readings.drop(axis=1, labels=["automatic_tags", "file_attachments"]).to_csv(
-            f"{PROJECT_DIR}/docs/master_table/master_table.csv", index=False
-        )
-    )
+    (readings.to_markdown(f"{PROJECT_DIR}/docs/master_table/master_table.md"))
+
+    (readings.to_csv(f"{PROJECT_DIR}/docs/master_table/master_table.csv", index=False))
